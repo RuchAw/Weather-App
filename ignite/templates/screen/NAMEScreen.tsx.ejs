@@ -1,0 +1,40 @@
+---
+destinationDir: app/screens
+patches:
+- path: "app/screens/index.ts"
+  append: "export * from \"./<%= props.pascalCaseName %>Screen\"\n"
+  skip: <%= props.skipIndexFile %>
+- path: "app/navigators/AppNavigator.tsx"
+  replace: "// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST"
+  insert: "<%= props.pascalCaseName %>: undefined\n\t// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST"
+- path: "app/navigators/AppNavigator.tsx"
+  replace: "{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}"
+  insert: "<Stack.Screen name=\"<%= props.pascalCaseName %>\" component={Screens.<%= props.pascalCaseName %>Screen} />\n\t\t\t{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}"
+  skip: <%= props.skipIndexFile %>
+---
+import { FC } from "react"
+import { observer } from "mobx-react-lite"
+import {View, ViewStyle} from "react-native"
+import {AppStackScreenProps} from "../navigators"
+import Drawer from "../components/renders/drawer/Drawer"
+import {spacing} from "../theme"
+import {BaseText} from "../components/baseComponents"
+
+interface <%= props.pascalCaseName %>ScreenProps extends AppStackScreenProps<"<%= props.pascalCaseName %>"> {}
+
+
+export const <%= props.pascalCaseName %>Screen: FC<<%= props.pascalCaseName %>ScreenProps> = observer(function <%= props.pascalCaseName %>Screen() {
+
+  return (
+    <Drawer backSlug="common.back">
+      <View style={$root}>
+        <BaseText text="<%= props.pascalCaseName %>Screen" />
+      </View>
+    </Drawer>
+  )
+
+})
+
+const $root: ViewStyle = {
+  marginHorizontal: spacing.df
+}
